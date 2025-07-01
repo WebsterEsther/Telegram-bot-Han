@@ -383,6 +383,11 @@ def main():
         # 在Render上使用webhook
         if os.getenv('RENDER'):
             port = int(os.getenv('PORT', 10000))
+            await app.bot.set_webhook(
+        url=f"https://{os.getenv('RENDER_EXTERNAL_HOSTNAME')}/{config.token}",
+        allowed_updates=["message", "callback_query"],
+        drop_pending_updates=True
+    )
             app.run_webhook(
                 listen="0.0.0.0",
                 port=port,
