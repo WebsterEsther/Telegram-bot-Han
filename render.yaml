@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: telegram-bot
+    env: python
+    python.version: "3.10.8"
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    healthCheckPath: /healthz
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        fromGroup: telegram-bot-env
+      - key: ADMIN_EMAIL
+        fromGroup: telegram-bot-env
+      - key: EMAIL_PASSWORD
+        fromGroup: telegram-bot-env
+      - key: SMTP_SERVER
+        value: "smtp.gmail.com"
+      - key: SMTP_PORT
+        value: "465"
+      - key: EXCHANGE_RATE
+        value: "13.0"
+      - key: RENDER
+        value: "true"
+      - key: WEBHOOK_SECRET
+        generateValue: true
