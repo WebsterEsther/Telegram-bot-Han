@@ -6,11 +6,7 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: python bot.py
     healthCheckPath: /healthz
-    envVars:  
-      - key: RENDER_EXTERNAL_HOSTNAME  
-        generateValue: true
-      - key: WEBHOOK_SECRET
-        generateValue: true
+    envVars:
       - key: TELEGRAM_BOT_TOKEN
         fromGroup: telegram-bot-env
       - key: ADMIN_EMAIL
@@ -25,5 +21,7 @@ services:
         value: "13.0"
       - key: RENDER
         value: "true"
+      - key: RENDER_EXTERNAL_HOSTNAME
+        generateValue: true
       - key: WEBHOOK_SECRET
         generateValue: true
