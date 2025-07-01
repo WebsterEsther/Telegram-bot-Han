@@ -363,8 +363,7 @@ def setup_handlers(app):
     app.add_handler(CommandHandler("healthz", handlers.health_check))
     app.add_error_handler(handlers.handle_errors)
 
-def main():
-    """启动入口"""
+async def main():
     try:
         # 创建应用
         app = ApplicationBuilder() \
@@ -384,11 +383,11 @@ def main():
         if os.getenv('RENDER'):
             port = int(os.getenv('PORT', 10000))
             await app.bot.set_webhook(
-        url=f"https://{os.getenv('RENDER_EXTERNAL_HOSTNAME')}/{config.token}",
-        allowed_updates=["message", "callback_query"],
-        drop_pending_updates=True
-    )
-            app.run_webhook(
+                url=f"https://{os.getenv('RENDER_EXTERNAL_HOSTNAME')}/{config.token}",
+                allowed_updates=["message", "callback_query"],
+                drop_pending_updates=True
+            )
+            await app.run_webhook(
                 listen="0.0.0.0",
                 port=port,
                 url_path=config.token,
@@ -396,11 +395,12 @@ def main():
                 secret_token=os.getenv('WEBHOOK_SECRET', 'default_secret')
             )
         else:
-            app.run_polling()
+            await app.run_polling()
             
     except Exception as e:
         logger.critical(f"启动失败: {str(e)}", exc_info=True)
         raise
 
 if __name__ == "__main__":
-    main()
+    import asyncio
+    asyncio.run(main())
